@@ -19,8 +19,8 @@
         #widgetContainer {
             display: flex;
             flex-direction: column;
-            width: 100%;  /* Ép khung chứa rộng 100% theo setting của Live Studio */
-            height: 100%; /* Ép khung chứa cao 100% */
+            width: 25%;  /* Ép khung chứa rộng 100% theo setting của Live Studio */
+            height: 98%; /* Ép khung chứa cao 100% */
             opacity: 0; 
             transition: opacity 0.8s ease-in-out; 
         }
@@ -28,7 +28,7 @@
         #boardTitle {
             margin: 0;
             padding: 10px 0 5px 0; 
-            text-align: left; 
+            text-align: center; 
             font-weight: 900;
             color: #FFD700;
             text-transform: uppercase;
@@ -85,9 +85,9 @@
                 url: "https://zypage.com/donate-top/7c29c5d01aa4e5538068c6f6c6874370acd4a33d?type=list&time=all&limit=5&amount=yes",
                 titlePadding: "15px",  
                 titleSize: "22px",
-                iframePadding: "15px", 
-                iframeScale: 1.4,      
-                iframeWidth: "71%"     
+                iframePadding: "10px", 
+                iframeScale: 1.3,      
+                iframeWidth: "83.33%"     
             }
         ];
         // ==========================================
@@ -95,8 +95,8 @@
         let index = 0;
 
         const urlParams = new URLSearchParams(window.location.search);
-        const displayTime = (parseInt(urlParams.get('time')) || 15) * 1000; 
-        const restTime = (parseInt(urlParams.get('rest')) || 5) * 1000;     
+        const displayTime = (parseInt(urlParams.get('time')) || 3) * 1000; 
+        const restTime = (parseInt(urlParams.get('rest')) || 3) * 1000;     
 
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
