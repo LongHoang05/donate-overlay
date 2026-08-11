@@ -3,116 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donate Rotate Pro Max Fix</title>
+    <title>Donate Rotate - Anti Ban Pro Max</title>
     <style>
-        /* Đã thay đổi toàn bộ vw, vh thành 100% để trị lỗi bóp khung của Live Studio */
         body, html { 
-            margin: 0; 
-            padding: 0; 
-            overflow: hidden; 
-            background-color: transparent; 
-            width: 100%;  /* Sửa ở đây */
-            height: 100%; /* Sửa ở đây */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0; overflow: hidden; background-color: transparent; 
+            width: 100%; height: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         #widgetContainer {
-            display: flex;
-            flex-direction: column;
-            width: 100%;  /* Ép khung chứa rộng 100% theo setting của Live Studio */
-            height: 98%; /* Ép khung chứa cao 100% */
-            opacity: 0; 
-            transition: opacity 0.8s ease-in-out; 
+            display: flex; flex-direction: column; width: 100%; height: 100%;
+            opacity: 0; transition: opacity 0.8s ease-in-out; 
         }
 
         #boardTitle {
-            margin: 0;
-            padding: 10px 0 5px 0; 
-            text-align: center; 
-            font-weight: 900;
-            color: #FFD700;
-            text-transform: uppercase;
+            margin: 0; padding: 10px 0 5px 0; text-align: left; font-weight: 900;
+            color: #FFD700; text-transform: uppercase;
             text-shadow: 2px 2px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
-            letter-spacing: 1px;
-            white-space: nowrap; /* Chống rớt dòng làm hỏng layout */
+            letter-spacing: 1px; white-space: nowrap; 
             transition: padding-left 0.3s ease, font-size 0.3s ease;
         }
 
-        iframe { 
-            flex: 1; 
-            border: none; 
-            box-sizing: border-box; 
+        /* 1. Tạo một cái kho chứa tất cả các bảng */
+        #framesWrapper {
+            flex: 1; position: relative; width: 100%; height: 100%;
+        }
+
+        /* 2. Cài đặt cho các bảng mặc định tàng hình hết */
+        .donate-frame { 
+            position: absolute; top: 0; left: 0; border: none; box-sizing: border-box; 
             transform-origin: top left; 
-            transition: padding-left 0.3s ease, transform 0.3s ease; 
+            opacity: 0; visibility: hidden; 
+            transition: opacity 0.4s ease-in-out; 
+            height: 100%;
         }
     </style>
 </head>
 <body>
     <div id="widgetContainer">
         <h2 id="boardTitle"></h2>
-        <iframe id="donateFrame"></iframe>
+        <!-- Nơi chứa các bảng đã được sinh ra sẵn -->
+        <div id="framesWrapper"></div>
     </div>
 
     <script>
-        const frame = document.getElementById('donateFrame');
         const titleElement = document.getElementById('boardTitle');
         const container = document.getElementById('widgetContainer');
+        const framesWrapper = document.getElementById('framesWrapper');
         
-        // ==========================================
-        // KHU VỰC CÀI ĐẶT THÔNG SỐ CHO TỪNG BẢNG
-        // ==========================================
         const boards = [
             {
                 name: "❤️ TOP LƯỢT THÍCH ❤️",
                 url: "https://tikfinity.zerody.one/widget/topliker?cid=3484757",
-                titlePadding: "15px",  
-                titleSize: "22px",     
-                iframePadding: "0px",  
-                iframeScale: 1,        
-                iframeWidth: "100%"    
+                titlePadding: "15px",  titleSize: "22px",     
+                iframePadding: "0px",  iframeScale: 1, iframeWidth: "100%"    
             },
             {
                 name: "🏆 Top Điểm TikTok 🏆",
                 url: "https://tikfinity.zerody.one/widget/ranking?cid=3484757",
-                titlePadding: "15px",  
-                titleSize: "22px",
-                iframePadding: "0px",
-                iframeScale: 1,
-                iframeWidth: "100%"
+                titlePadding: "15px",  titleSize: "22px",
+                iframePadding: "0px",  iframeScale: 1, iframeWidth: "100%"
             },
             {
                 name: "💸 TOP DONATE ZyPage 💸",
                 url: "https://zypage.com/donate-top/7c29c5d01aa4e5538068c6f6c6874370acd4a33d?type=list&time=all&limit=5&amount=yes",
-                titlePadding: "15px",  
-                titleSize: "22px",
-                iframePadding: "10px", 
-                iframeScale: 1.3,      
-                iframeWidth: "83.33%"     
+                titlePadding: "15px",  titleSize: "22px",
+                iframePadding: "10px", iframeScale: 1.3, iframeWidth: "83.33%"     
             }
         ];
-        // ==========================================
         
+        const iframeElements = [];
+
+        // ====================================================
+        // CHIÊU BÀI: TẢI LINK ĐÚNG 1 LẦN DUY NHẤT LÚC MỞ WEB
+        // ====================================================
+        boards.forEach((board) => {
+            const iframe = document.createElement('iframe');
+            iframe.src = board.url; // Tải dữ liệu 1 lần!
+            iframe.className = 'donate-frame';
+            
+            iframe.style.paddingLeft = board.iframePadding;
+            iframe.style.transform = `scale(${board.iframeScale})`;
+            iframe.style.width = board.iframeWidth;
+            
+            framesWrapper.appendChild(iframe);
+            iframeElements.push(iframe); 
+        });
+
         let index = 0;
 
+        // Lưu ý: Đừng để time 3 giây, nháy quá nhanh khán giả chóng mặt đấy. Mình để mặc định 10s nhé!
         const urlParams = new URLSearchParams(window.location.search);
-        const displayTime = (parseInt(urlParams.get('time')) || 3) * 1000; 
+        const displayTime = (parseInt(urlParams.get('time')) || 10) * 1000; 
         const restTime = (parseInt(urlParams.get('rest')) || 3) * 1000;     
 
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         async function startRotation() {
+            await sleep(1000); 
+
             while (true) {
-                frame.src = boards[index].url;
-                
                 titleElement.innerText = boards[index].name;
                 titleElement.style.paddingLeft = boards[index].titlePadding; 
                 titleElement.style.fontSize = boards[index].titleSize;
                 
-                frame.style.paddingLeft = boards[index].iframePadding;
-                frame.style.transform = `scale(${boards[index].iframeScale})`;
-                frame.style.width = boards[index].iframeWidth;
+                // ====================================================
+                // CHỈ THAY ĐỔI ẨN/HIỆN (OPACITY), KHÔNG ĐỘNG TỚI SRC
+                // ====================================================
+                iframeElements.forEach((iframe, i) => {
+                    if (i === index) {
+                        iframe.style.opacity = 1;         
+                        iframe.style.visibility = "visible";
+                    } else {
+                        iframe.style.opacity = 0;         
+                        iframe.style.visibility = "hidden";
+                    }
+                });
 
-                await sleep(500); 
                 container.style.opacity = 1;
                 
                 await sleep(displayTime);
